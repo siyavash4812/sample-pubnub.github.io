@@ -107,6 +107,7 @@ var urlargs         = urlparams();
 var my_number       = PUBNUB.$('my-number');
 var my_link         = PUBNUB.$('my-number-link');
 var number          = urlargs.number || Math.floor(Math.random()*999+1);
+//var number          = new Date().getTime() + "Siyavash";
 
 my_number.number    = number;
 my_number.innerHTML = ''+my_number.number;
@@ -164,12 +165,22 @@ var phone     = window.phone = PHONE({
 // Video Session Connected
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 function connected(session) {
-    video_out.innerHTML = '';
-    video_out.appendChild(session.video);
+    if (confirm('Do you want to be connected to this number?' + session.number)) {
+    // Save it!
+        video_out.innerHTML = '';
+        video_out.appendChild(session.video);
 
-    PUBNUB.$('number').value = ''+session.number;
-    sounds.play('sound/hi');
-    console.log("Hi!");
+        PUBNUB.$('number').value = ''+session.number;
+        sounds.play('sound/hi');
+        console.log("Hi!");
+        
+    } else {
+        // Do nothing!
+        session.hangup();
+        console.log('Rejected');
+    }
+
+
 }
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
